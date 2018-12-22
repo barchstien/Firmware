@@ -788,6 +788,10 @@ GPS::run()
 //							mode_str = "ASHTECH";
 //							break;
 //
+//						case GPS_DRIVER_MODE_EMLIDREACH:
+//							mode_str = "EMLID REACH";
+//							break;
+//
 //						default:
 //							break;
 //						}
