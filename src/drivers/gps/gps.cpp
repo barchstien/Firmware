@@ -723,7 +723,7 @@ GPS::run()
 				break;
 
 			case GPS_DRIVER_MODE_EMLIDREACH:
-				_helper = new GPSDriverEmlidReach(&GPS::callback, this, &_report_gps_pos);
+				_helper = new GPSDriverEmlidReach(&GPS::callback, this, &_report_gps_pos, _p_report_sat_info);
 				break;
 
 			default:
@@ -786,6 +786,10 @@ GPS::run()
 //
 //						case GPS_DRIVER_MODE_ASHTECH:
 //							mode_str = "ASHTECH";
+//							break;
+//
+//						case GPS_DRIVER_MODE_EMLIDREACH:
+//							mode_str = "EMLID REACH";
 //							break;
 //
 //						default:
