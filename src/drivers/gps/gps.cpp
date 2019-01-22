@@ -302,7 +302,7 @@ GPS::~GPS()
 		unsigned int i = 0;
 
 		do {
-			usleep(20000); // 20 ms
+			px4_usleep(20000); // 20 ms
 			++i;
 		} while (_secondary_instance && i < 100);
 	}
@@ -402,11 +402,11 @@ int GPS::pollOrRead(uint8_t *buf, size_t buf_length, int timeout)
 			err = ioctl(_serial_fd, FIONREAD, (unsigned long)&bytes_available);
 
 			if (err != 0 || bytes_available < (int)character_count) {
-				usleep(sleeptime);
+				px4_usleep(sleeptime);
 			}
 
 #else
-			usleep(sleeptime);
+			px4_usleep(sleeptime);
 #endif
 
 			ret = ::read(_serial_fd, buf, buf_length);
@@ -421,7 +421,7 @@ int GPS::pollOrRead(uint8_t *buf, size_t buf_length, int timeout)
 #else
 	/* For QURT, just use read for now, since this doesn't block, we need to slow it down
 	 * just a bit. */
-	usleep(10000);
+	px4_usleep(10000);
 	return ::read(_serial_fd, buf, buf_length);
 #endif
 }
@@ -695,7 +695,7 @@ GPS::run()
 
 			publish();
 
-			usleep(200000);
+			px4_usleep(200000);
 
 		} else {
 
@@ -824,7 +824,7 @@ GPS::run()
 
 				case GPS_DRIVER_MODE_EMLIDREACH:
 					_mode = GPS_DRIVER_MODE_UBX;
-					usleep(500000); // tried all possible drivers. Wait a bit before next round
+					px4_usleep(500000); // tried all possible drivers. Wait a bit before next round
 					break;
 
 				default:
@@ -832,7 +832,7 @@ GPS::run()
 				}
 
 			} else {
-				usleep(500000);
+				px4_usleep(500000);
 			}
 
 		}
@@ -1016,7 +1016,7 @@ int GPS::task_spawn(int argc, char *argv[], Instance instance)
 	}
 
 	int task_id = px4_task_spawn_cmd("gps", SCHED_DEFAULT,
-				   SCHED_PRIORITY_SLOW_DRIVER, 1530,
+				   SCHED_PRIORITY_SLOW_DRIVER, 1600,
 				   entry_point, (char *const *)argv);
 
 	if (task_id < 0) {
@@ -1160,7 +1160,7 @@ GPS *GPS::instantiate(int argc, char *argv[], Instance instance)
 
 			do {
 				/* wait up to 1s */
-				usleep(2500);
+				px4_usleep(2500);
 
 			} while (!_secondary_instance && ++i < 400);
 
